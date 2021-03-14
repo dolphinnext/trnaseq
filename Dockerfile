@@ -34,5 +34,6 @@ ENV PATH /opt/conda/envs/dolphinnext-nanopore-1.0/bin:$PATH
 
 # Install usearch
 RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
-    gunzip usearch10.0.240_i86linux32.gz && mv usearch10.0.240_i86linux32 usearch && cp usearch /usr/local/bin
+    gunzip usearch10.0.240_i86linux32.gz && mv usearch10.0.240_i86linux32 usearch && \
+    cp usearch /usr/local/bin/usearch && chmod 777 /usr/local/bin/usearch 
 ENV PATH /usr/local/bin/usearch:$PATH
