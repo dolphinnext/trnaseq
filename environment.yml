@@ -1,10 +1,11 @@
 # You can use this file to create a conda environment for this pipeline:
 # conda env create -f environment.yml
-name: dolphinnext-nanopore-1.0
+name: dolphinnext-trnaseq-1.0
 channels:
    - conda-forge
    - bioconda
    - defaults
    - mamba
 dependencies:
+   - python=3.7
    - mimseq=0.3.3

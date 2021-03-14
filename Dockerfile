@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-LABEL author="onur.yukselen@umassmed.edu"  description="Docker image containing all requirements for the Nanopore pipeline"
+LABEL author="onur.yukselen@umassmed.edu"  description="Docker image containing all requirements for the tRNAseq pipeline"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
@@ -25,12 +25,14 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825
 #RUN apt-key adv --keyserver pgp.mit.edu --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN apt-get -y install apt-transport-https
 RUN apt-get -y update
+# R png fonts
+RUN apt-get -y install fonts-texgyre lmodern texlive-fonts-extra texlive-fonts-recommended
 
 RUN conda update -n base -c defaults conda
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 RUN mkdir -p /project /nl /mnt /share
-ENV PATH /opt/conda/envs/dolphinnext-nanopore-1.0/bin:$PATH
+ENV PATH /opt/conda/envs/dolphinnext-trnaseq-1.0/bin:$PATH
 
 # Install usearch
 RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
