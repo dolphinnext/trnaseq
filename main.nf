@@ -624,7 +624,7 @@ input:
  val mate from g_2_mate_g_19
 
 output:
- set val(name), file("result/*_valid.fastq")  into g_19_reads_g_9
+ set val(name), file("result/*.fastq")  into g_19_reads_g_9
  file "${name}.*.log"  into g_19_log_file
 
 when:
@@ -651,9 +651,9 @@ umi_tools extract --bc-pattern='${barcode_pattern1}' \
                   --bc-pattern2='${barcode_pattern2}' \
                   --extract-method=regex \
                   --stdin=${file1} \
-                  --stdout=result/${name}_R1_valid.fastq \
+                  --stdout=result/${name}_R1.fastq \
                   --read2-in=${file2} \
-                  --read2-out=result/${name}_R2_valid.fastq\
+                  --read2-out=result/${name}_R2.fastq\
 				  --quality-filter-threshold=${UMIqualityFilterThreshold} \
 				  --quality-encoding=phred${phred} \
 				  --log=${name}.umitools.log 
@@ -664,13 +664,13 @@ umi_tools extract --bc-pattern='${barcode_pattern1}' \
                   --log=${name}.umitools.log \
                   --extract-method=regex \
                   --stdin ${file1} \
-                  --stdout result/${name}_valid.fastq \
+                  --stdout result/${name}.fastq \
 				  --quality-filter-threshold=${UMIqualityFilterThreshold} \
 				  --quality-encoding=phred${phred}
 	if [ "${remove_duplicates_based_on_UMI}" == "true" ]; then		  
-        mv result/${name}_valid.fastq  result/${name}_umitools.fastq 
+        mv result/${name}.fastq  result/${name}_umitools.fastq 
         ## only checks last part of the underscore splitted header for UMI
-        awk '(NR%4==1){name=\$1;header=\$0;len=split(name,umiAr,"_");umi=umiAr[len];} (NR%4==2){total++;if(a[umi]!=1){nondup++;a[umi]=1;  print header;print;getline; print; getline; print;}} END{print FILENAME"\\t"total"\\t"nondup > "${name}.dedup.log"}' result/${name}_umitools.fastq > result/${name}_valid.fastq
+        awk '(NR%4==1){name=\$1;header=\$0;len=split(name,umiAr,"_");umi=umiAr[len];} (NR%4==2){total++;if(a[umi]!=1){nondup++;a[umi]=1;  print header;print;getline; print; getline; print;}} END{print FILENAME"\\t"total"\\t"nondup > "${name}.dedup.log"}' result/${name}_umitools.fastq > result/${name}.fastq
         rm result/${name}_umitools.fastq
 	fi			  
 fi
