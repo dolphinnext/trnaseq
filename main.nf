@@ -703,8 +703,8 @@ mv $reads reads/.
 //* platform
 if ($HOSTNAME == "ghpcc06.umassrc.org"){
     $TIME = 3000
-    $CPU  = 2
-    $MEMORY = 24
+    $CPU  = 10
+    $MEMORY = 30
     $QUEUE = "long"
 }
 //* platform
@@ -727,13 +727,13 @@ input:
 
 output:
  file "${experiment_name}"  into g_17_outputDir
- file "**/*.pdf"  into g_17_outputFilePdf
- file "**/*.png"  into g_17_png
+ file "**/*.pdf" optional true  into g_17_outputFilePdf
+ file "**/*.png" optional true  into g_17_png
 
 script:
 experiment_name = params.mimseq.experiment_name
 """
-mimseq -t ${params.genomic_tRNAs} -o ${params.trnaout} -m ${params.mitochondrial_tRNAs} --cluster --cluster-id 0.95 --snp-tolerance --cca-analysis --threads 10 --min-cov 2000 --max-mismatches 0.1 --control-condition ${control} -n ${experiment_name} --out-dir ${experiment_name} --max-multi 1 --remap --remap-mismatches 0.075 ${groups}
+mimseq -t ${params.genomic_tRNAs} -o ${params.trnaout} -m ${params.mitochondrial_tRNAs} --cluster --cluster-id 0.95 --snp-tolerance --cca-analysis --threads 1 --min-cov 2000 --max-mismatches 0.1 --control-condition ${control} -n ${experiment_name} --out-dir ${experiment_name} --max-multi 1 --remap --remap-mismatches 0.075 ${groups}
 """
 
 }

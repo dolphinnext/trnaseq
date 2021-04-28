@@ -8,7 +8,7 @@ channels:
    - mamba
 dependencies:
    - python=3.7
-   - mimseq=0.3.3
+   - mimseq=0.3.3.2
    - umi_tools=1.1.1
    - trimmomatic=0.39
    - fastqc=0.11.8
