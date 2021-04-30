@@ -732,8 +732,9 @@ output:
 
 script:
 experiment_name = params.mimseq.experiment_name
+mimseq_parameters = params.mimseq.mimseq_parameters
 """
-mimseq -t ${params.genomic_tRNAs} -o ${params.trnaout} -m ${params.mitochondrial_tRNAs} --cluster --cluster-id 0.95 --snp-tolerance --cca-analysis --threads 1 --min-cov 2000 --max-mismatches 0.1 --control-condition ${control} -n ${experiment_name} --out-dir ${experiment_name} --max-multi 1 --remap --remap-mismatches 0.075 ${groups}
+mimseq -t ${params.genomic_tRNAs} -o ${params.trnaout} -m ${params.mitochondrial_tRNAs} ${mimseq_parameters} --control-condition ${control} -n ${experiment_name} --out-dir ${experiment_name}  ${groups}
 """
 
 }
