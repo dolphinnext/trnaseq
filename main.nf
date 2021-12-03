@@ -94,7 +94,7 @@ if ($HOSTNAME == "ghpcc06.umassrc.org"){
 //* platform
 //* autofill
 if (!((params.run_Adapter_Removal && (params.run_Adapter_Removal == "yes")) || !params.run_Adapter_Removal)){
-g_1_reads_g3_18.into{g3_18_reads_g3_19}
+g_1_reads_g3_18.set{g3_18_reads_g3_19}
 g3_18_log_file_g3_11 = Channel.empty()
 } else {
 
@@ -229,7 +229,7 @@ if ($HOSTNAME == "ghpcc06.umassrc.org"){
 //* platform
 //* autofill
 if (!((params.run_Trimmer && (params.run_Trimmer == "yes")) || !params.run_Trimmer)){
-g3_18_reads_g3_19.into{g3_19_reads_g3_20}
+g3_18_reads_g3_19.set{g3_19_reads_g3_20}
 g3_19_log_file_g3_21 = Channel.empty()
 } else {
 
@@ -487,7 +487,7 @@ if ($HOSTNAME == "ghpcc06.umassrc.org"){
 //* platform
 //* autofill
 if (!((params.run_Quality_Filtering && (params.run_Quality_Filtering == "yes")) || !params.run_Quality_Filtering)){
-g3_19_reads_g3_20.into{g3_20_reads_g_19}
+g3_19_reads_g3_20.set{g3_20_reads_g_19}
 g3_20_log_file_g3_16 = Channel.empty()
 } else {
 
@@ -607,14 +607,14 @@ sub runCmd {
 //* @style @condition:{single_or_paired_end_reads="single", barcode_pattern1,remove_duplicates_based_on_UMI}, {single_or_paired_end_reads="pair", barcode_pattern1,barcode_pattern2}
 
 if (!(params.run_UMIextract == "yes" || !params.run_UMIextract)){
-g3_20_reads_g_19.into{g_19_reads_g_9}
+g3_20_reads_g_19.set{g_19_reads_g_9}
 g_19_log_file = Channel.empty()
 } else {
 
 
 process UMIextract {
 
-publishDir params.outdir, overwrite: true, mode: 'copy',
+publishDir params.outdir, mode: 'copy',
 	saveAs: {filename ->
 	if (filename =~ /${name}..*.log$/) "umi_extract/$filename"
 }
@@ -645,6 +645,8 @@ phred = params.UMIextract.phred
 remove_duplicates_based_on_UMI = params.UMIextract.remove_duplicates_based_on_UMI
 
 """
+set +e
+source activate umi_tools_env 2> /dev/null || true
 mkdir result
 if [ "${mate}" == "pair" ]; then
 umi_tools extract --bc-pattern='${barcode_pattern1}' \
@@ -712,7 +714,7 @@ if ($HOSTNAME == "ghpcc06.umassrc.org"){
 
 process mimseq {
 
-publishDir params.outdir, overwrite: true, mode: 'copy',
+publishDir params.outdir, mode: 'copy',
 	saveAs: {filename ->
 	if (filename =~ /${experiment_name}$/) "report/$filename"
 	else if (filename =~ /.*.*\/.*.pdf$/) "pdf_report/$filename"
@@ -980,7 +982,7 @@ if ($HOSTNAME == "ghpcc06.umassrc.org"){
 
 process Overall_Summary {
 
-publishDir params.outdir, overwrite: true, mode: 'copy',
+publishDir params.outdir, mode: 'copy',
 	saveAs: {filename ->
 	if (filename =~ /overall_summary.tsv$/) "summary/$filename"
 }
